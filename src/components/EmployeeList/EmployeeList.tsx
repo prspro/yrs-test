@@ -16,18 +16,22 @@ const EmployeeList: FC<IEmployeeListProps> = () => {
           {alphsbetList.map((entry, idx) => (
             <li key={idx} className="employee-list__item">
               <span className="employee-list__letter">{entry.letter}</span>
-              <ul className="employee-list__grid">
-                {entry.employeeList.map((employee) => (
-                  <li className="employee-list__grid-item" key={employee.id}>
-                    <Employee
-                      id={employee.id}
-                      firstName={employee.firstName}
-                      lastName={employee.lastName}
-                      isActive={employee.isActive}
-                    />
-                  </li>
-                ))}
-              </ul>
+              {entry.employeeList.length > 0 ? (
+                <ul className="employee-list__grid">
+                  {entry.employeeList.map((employee) => (
+                    <li className="employee-list__grid-item" key={employee.id}>
+                      <Employee
+                        id={employee.id}
+                        firstName={employee.firstName}
+                        lastName={employee.lastName}
+                        isActive={employee.isActive}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <span>—</span>
+              )}
             </li>
           ))}
         </ul>
