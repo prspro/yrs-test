@@ -1,3 +1,4 @@
+import EmployeeBirthday from "./components/EmployeeBirthday";
 import EmployeeList from "./components/EmployeeList";
 
 function App() {
@@ -7,7 +8,9 @@ function App() {
       <div className="app__employees-list">
         <EmployeeList />
       </div>
-      <div className="app__employees-birthday">employees birthday</div>
+      <div className="app__employees-birthday">
+        <EmployeeBirthday />
+      </div>
     </div>
   );
 }

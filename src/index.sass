@@ -3,9 +3,23 @@
 body
     font-size: 16px
     font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif
+    margin: 0
 
 .app
     display: flex
+    height: 100vh
+    padding: 0 5px
     &__employees-list, &__employees-birthday
         flex: 1
-    &__employees-birthday
+        overflow: auto
+        &::-webkit-scrollbar
+            width: 10px
+        &::-webkit-scrollbar-track
+            box-shadow: #555
+            border-radius: 50px
+        &::-webkit-scrollbar-thumb 
+            background: #ccc
+    &__employees-list
+        padding-right: 40px
+        margin-right: 40px
+        border-right: 1px solid #000

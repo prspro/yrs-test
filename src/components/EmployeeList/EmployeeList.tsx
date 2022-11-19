@@ -21,6 +21,7 @@ const EmployeeList: FC<IEmployeeListProps> = () => {
                   {entry.employeeList.map((employee) => (
                     <li className="employee-list__grid-item" key={employee.id}>
                       <Employee
+                        className="employee-list__employee"
                         id={employee.id}
                         firstName={employee.firstName}
                         lastName={employee.lastName}

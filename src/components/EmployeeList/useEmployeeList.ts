@@ -32,7 +32,7 @@ const useEmployeeList = ():IUseEmployeeList => {
       letter: letter,
       employeeList: employeeList
         .filter(employee => employee.lastName[0].toLowerCase() === letter.toLowerCase())
-        .sort(),
+        .sort((a, b) => a.lastName.localeCompare(b.lastName)),
     }
   });
 
