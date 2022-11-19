@@ -1,0 +1,42 @@
+import { useEffect } from "react";
+import { useAppSelector, useAppDispatch } from "../../hooks/redux";
+import { getEmployeeList } from "../../store/slices/appSlice";
+
+const alphabet = "abcdefghijklmnopqrstuvwxyz";
+
+interface IUseEmployeeList {
+  isLoading: boolean;
+  alphsbetList: {
+    letter: string;
+    employeeList: {
+      id: string;
+      firstName: string;
+      lastName: string;
+      dob: string;
+      isActive: boolean;
+    }[]
+  }[]
+}
+
+const useEmployeeList = ():IUseEmployeeList => {
+  const dispatch = useAppDispatch();
+  const employeeList = useAppSelector((state) => state.app.employeeList);
+  const isLoading = useAppSelector((state) => state.app.isLoading);
+
+  useEffect(() => {
+    dispatch(getEmployeeList());
+  }, []);
+
+  const alphsbetList = alphabet.split("").map(letter => {
+    return {
+      letter: letter,
+      employeeList: employeeList
+        .filter(employee => employee.lastName[0].toLowerCase() === letter.toLowerCase())
+        .sort(),
+    }
+  });
+
+  return {isLoading, alphsbetList};
+};
+
+export default useEmployeeList;

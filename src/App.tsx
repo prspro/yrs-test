@@ -1,22 +1,13 @@
-import {useEffect} from 'react';
-import Person from './components/Person';
-import { getPersonList } from './store/slices/appSlice';
-import { useAppDispatch } from './hooks/redux';
+import EmployeeList from "./components/EmployeeList";
 
 function App() {
-const dispatch = useAppDispatch();
-
-  // const personList = useSelector((state: RootState) => state.app.personList);
-  // const isLoading = useSelector((state: RootState) => state.app.isLoading);
-
-  useEffect(() => {
-    dispatch(getPersonList())
-  }, [])
-  
 
   return (
-    <div className="App">
-      <Person />
+    <div className="app">
+      <div className="app__employees-list">
+        <EmployeeList />
+      </div>
+      <div className="app__employees-birthday">employees birthday</div>
     </div>
   );
 }
