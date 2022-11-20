@@ -1,4 +1,5 @@
 {
+  "homepage": "https://prspro.github.io/yrs-test",
   "name": "yrs-test",
   "version": "0.1.0",
   "private": true,
@@ -16,10 +17,13 @@
     "@types/node": "^17.0.45",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.9",
+    "gh-pages": "^4.0.0",
     "sass": "^1.56.1",
     "typescript": "^4.9.3"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
