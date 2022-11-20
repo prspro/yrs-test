@@ -9,13 +9,13 @@ interface IEmployee {
   isActive: boolean;
 }
 
-interface appState {
+interface IAppState {
   employeeList: IEmployee[];
   isLoading: boolean;
   error: string;
 }
 
-const initialState: appState = {
+const initialState: IAppState = {
   employeeList: [],
   isLoading: false,
   error: "",
@@ -25,12 +25,18 @@ export const getEmployeeList = createAsyncThunk(
   "app/getEmployeeList",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get<IEmployee[]>(
-        "https://yalantis-react-school-api.yalantis.com/api/task0/users"
-      );
-      return response.data.map(entry => {
-        return {...entry, isActive: false}
-      });
+      const localStorageData = localStorage.getItem("appData");
+
+      if (!localStorageData) {
+        const response = await axios.get<IEmployee[]>(
+          "https://yalantis-react-school-api.yalantis.com/api/task0/users"
+        );
+        return response.data.map((entry) => {
+          return { ...entry, isActive: false };
+        });
+      } else {
+        return JSON.parse(localStorageData);
+      }
     } catch (e) {
       return thunkAPI.rejectWithValue("error");
     }
@@ -50,6 +56,7 @@ export const appSlice = createSlice({
           ? { ...entry, isActive: action.payload.value }
           : entry;
       });
+      localStorage.setItem("appData", JSON.stringify(state.employeeList));
     },
   },
   extraReducers: {
@@ -71,8 +78,6 @@ export const appSlice = createSlice({
   },
 });
 
-export const {
-  updateEmployeeState
-} = appSlice.actions;
+export const { updateEmployeeState } = appSlice.actions;
 
 export default appSlice.reducer;
