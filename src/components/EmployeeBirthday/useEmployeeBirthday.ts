@@ -1,4 +1,3 @@
-import React from "react";
 import { useAppSelector } from "../../hooks/redux";
 
 const monthList = [
@@ -16,9 +15,8 @@ const monthList = [
   "December",
 ];
 
-// interface IuseEmployeeBirthdayProps {}
-interface IuseEmployeeBirthday {
-  // monthListUpToDate: () => number[];
+interface IUseEmployeeBirthday {
+  isDatedListEmpty: boolean;
   datedList: {
     month: string;
     employeeList: {
@@ -32,7 +30,7 @@ interface IuseEmployeeBirthday {
   }[];
 }
 
-const useEmployeeBirthday = (): IuseEmployeeBirthday => {
+const useEmployeeBirthday = (): IUseEmployeeBirthday => {
   const employeeList = useAppSelector((state) => state.app.employeeList).filter(
     (employee) => employee.isActive
   );
@@ -71,7 +69,10 @@ const useEmployeeBirthday = (): IuseEmployeeBirthday => {
     })
     .filter((month) => month.employeeList.length > 0);
 
+  const isDatedListEmpty = datedList.length === 0;
+
   return {
+    isDatedListEmpty,
     datedList,
   };
 };
