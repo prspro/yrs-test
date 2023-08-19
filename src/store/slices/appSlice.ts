@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { AsyncThunkAction } from "@reduxjs/toolkit";
+import { createAppAsyncThunk } from "../../hooks/redux";
 
 interface IEmployee {
   id: string;
@@ -23,23 +25,26 @@ const initialState: IAppState = {
 
 export const getEmployeeList = createAsyncThunk(
   "app/getEmployeeList",
-  async (_, thunkAPI) => {
-    try {
-      const localStorageData = localStorage.getItem("appData");
+  async () => {
+    const res = await axios.get<
+      {
+        id: string;
+        first_name: string;
+        last_name: string;
+        date_of_birth: string;
+        isActive: boolean;
+      }[]
+    >("https://random-data-api.com/api/v2/users?size=25");
 
-      if (!localStorageData) {
-        const response = await axios.get<IEmployee[]>(
-          "https://yalantis-react-school-api.yalantis.com/api/task0/users"
-        );
-        return response.data.map((entry) => {
-          return { ...entry, isActive: false };
-        });
-      } else {
-        return JSON.parse(localStorageData);
-      }
-    } catch (e) {
-      return thunkAPI.rejectWithValue("error");
-    }
+    return res.data.map((entry) => {
+      return {
+        id: entry.id,
+        isActive: false,
+        firstName: entry.first_name,
+        lastName: entry.last_name,
+        dob: entry.date_of_birth,
+      };
+    });
   }
 );
 
@@ -56,25 +61,26 @@ export const appSlice = createSlice({
           ? { ...entry, isActive: action.payload.value }
           : entry;
       });
-      localStorage.setItem("appData", JSON.stringify(state.employeeList));
+      // localStorage.setItem("appData", JSON.stringify(state.employeeList));
     },
   },
-  extraReducers: {
-    [getEmployeeList.fulfilled.type]: (
-      state,
-      action: PayloadAction<IEmployee[]>
-    ) => {
-      state.isLoading = false;
-      state.error = "";
-      state.employeeList = action.payload;
-    },
-    [getEmployeeList.pending.type]: (state) => {
+  extraReducers: (builder) => {
+    builder.addCase(getEmployeeList.pending, (state) => {
       state.isLoading = true;
-    },
-    [getEmployeeList.rejected.type]: (state, action: PayloadAction<string>) => {
+    });
+    builder.addCase(
+      getEmployeeList.fulfilled,
+      (state, action: PayloadAction<IEmployee[]>) => {
+        state.isLoading = false;
+        state.error = "";
+        state.employeeList = action.payload || [];
+      }
+    );
+    builder.addCase(getEmployeeList.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.payload;
-    },
+      state.error = action.error.message || "error";
+      state.employeeList = [];
+    });
   },
 });
 
