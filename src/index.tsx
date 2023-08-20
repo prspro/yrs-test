@@ -6,17 +6,13 @@ import App from "./App";
 import "normalize.css";
 import "./index.sass";
 
-import { PersistGate } from "redux-persist/integration/react";
-
 const container = document.getElementById("root")!;
 const root = createRoot(container as HTMLElement);
 
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-        <App />
-      {/* <PersistGate persistor={persistor}>
-      </PersistGate> */}
+      <App />
     </Provider>
   </React.StrictMode>
 );

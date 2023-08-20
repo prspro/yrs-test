@@ -34,7 +34,7 @@ const useEmployeeList = (): IUseEmployeeList => {
   const isLoading = useAppSelector((state) => state.app.isLoading);
 
   useEffect(() => {
-    dispatch(getEmployeeList())
+    dispatch<any>(getEmployeeList())
   }, [])
 
   const alphsbetList = alphabet.split("").map((letter) => {

@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { AsyncThunkAction } from "@reduxjs/toolkit";
-import { createAppAsyncThunk } from "../../hooks/redux";
 
 interface IEmployee {
   id: string;
