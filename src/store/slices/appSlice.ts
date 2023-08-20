@@ -24,25 +24,33 @@ const initialState: IAppState = {
 export const getEmployeeList = createAsyncThunk(
   "app/getEmployeeList",
   async () => {
-    const res = await axios.get<
-      {
-        id: string;
-        first_name: string;
-        last_name: string;
-        date_of_birth: string;
-        isActive: boolean;
-      }[]
-    >("https://random-data-api.com/api/v2/users?size=25");
+    const storedData = localStorage.getItem("yrsApp");
+    if (!storedData) {
+      const res = await axios.get<
+        {
+          id: string;
+          first_name: string;
+          last_name: string;
+          date_of_birth: string;
+          isActive: boolean;
+        }[]
+      >("https://random-data-api.com/api/v2/users?size=25");
 
-    return res.data.map((entry) => {
-      return {
-        id: entry.id,
-        isActive: false,
-        firstName: entry.first_name,
-        lastName: entry.last_name,
-        dob: entry.date_of_birth,
-      };
-    });
+      const finRes = res.data.map((entry) => {
+        return {
+          id: entry.id,
+          isActive: false,
+          firstName: entry.first_name,
+          lastName: entry.last_name,
+          dob: entry.date_of_birth,
+        };
+      });
+      localStorage.setItem("yrsApp", JSON.stringify(finRes));
+
+      return finRes;
+    } else {
+      return JSON.parse(localStorage.getItem("yrsApp") || "");
+    }
   }
 );
 
@@ -59,7 +67,7 @@ export const appSlice = createSlice({
           ? { ...entry, isActive: action.payload.value }
           : entry;
       });
-      // localStorage.setItem("appData", JSON.stringify(state.employeeList));
+      localStorage.setItem("yrsApp", JSON.stringify(state.employeeList));
     },
   },
   extraReducers: (builder) => {
